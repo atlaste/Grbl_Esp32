@@ -246,9 +246,11 @@ namespace WebUI {
             switch (status) {
                 case WL_NO_SSID_AVAIL:
                     msg = "No SSID";
+                    count = 40;
                     break;
                 case WL_CONNECT_FAILED:
                     msg = "Connection failed";
+                    count = 40;
                     break;
                 case WL_CONNECTED:
                     break;
@@ -400,7 +402,13 @@ namespace WebUI {
             //start services
             wifi_services.begin();
         } else if (wifiMode == ESP_WIFI_STA) {
-            if (!StartSTA()) {
+            int staAttempt;
+            for (staAttempt = 0; staAttempt < 10 && !StartSTA(); ++staAttempt) {
+                grbl_sendf(CLIENT_ALL, "[MSG:WiFi connect failed]\r\n");
+                COMMANDS::wait(5000);
+            }
+
+            if (staAttempt == 10) {
                 grbl_sendf(CLIENT_ALL, "[MSG:Cannot connect to %s]\r\n", wifi_sta_ssid->get());
                 StartAP();
             }

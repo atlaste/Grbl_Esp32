@@ -5,6 +5,7 @@
 #include "Pins/VoidPinDetail.h"
 #include "Pins/GPIOPinDetail.h"
 #include "Pins/I2SOPinDetail.h"
+#include "Pins/WifiSocketPinDetail.h"
 
 #if defined PIN_DEBUG && defined ESP32
 #    include "Pins/DebugPinDetail.h"
@@ -90,6 +91,12 @@ bool Pin::parse(String str, Pins::PinDetail*& pinImplementation) {
     } else if (prefix == "i2so") {
 #ifdef ESP32
         pinImplementation = new Pins::I2SOPinDetail(uint8_t(pinNumber), parser);
+#else
+        return false;  // not supported
+#endif
+    } else if (prefix == "wifisocket") {
+#ifdef ESP32
+        pinImplementation = new Pins::WifiSocketPinDetail(uint8_t(pinNumber), parser);
 #else
         return false;  // not supported
 #endif

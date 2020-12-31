@@ -36,7 +36,7 @@
 */
 
 #define MACHINE_NAME "Test Drive - Demo Only No I/O!"
-
+#define ENABLE_WIFI
 
 #define N_AXIS 3
 // This cannot use homing because there are no switches
@@ -55,3 +55,4 @@
 
 #define SPINDLE_TYPE            SpindleType::NONE
 
+#define COOLANT_MIST_PIN        "wifisocket.1"  // labeled Mist
