@@ -43,7 +43,8 @@ namespace UserOutput {
     public:
         AnalogOutput();
         AnalogOutput(uint8_t number, Pin pin, float pwm_frequency);
-        bool set_level(float percent);
+        bool     set_level(uint32_t numerator);
+        uint32_t denominator() { return 1UL << _resolution_bits; };
 
     protected:
         void init();
