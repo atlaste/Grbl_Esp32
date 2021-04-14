@@ -34,6 +34,8 @@ FlagSetting* laser_mode;
 // TODO Settings - also need to call my_spindle->init;
 IntSetting* laser_full_power;
 
+FlagSetting* rapid_move_above_z0;
+
 IntSetting*   status_mask;
 FloatSetting* junction_deviation;
 FloatSetting* arc_tolerance;
@@ -366,6 +368,8 @@ void make_settings() {
     // GRBL Numbered Settings
     laser_mode       = new FlagSetting(GRBL, WG, "32", "GCode/LaserMode", DEFAULT_LASER_MODE);
     laser_full_power = new IntSetting(EXTENDED, WG, NULL, "Laser/FullPower", DEFAULT_LASER_FULL_POWER, 0, 10000, checkSpindleChange);
+
+    rapid_move_above_z0 = new FlagSetting(EXTENDED, WG, NULL, "GCode/RapidMoveAboveZ0", false);
 
     // TODO Settings - also need to call my_spindle->init();
     rpm_min = new FloatSetting(GRBL, WG, "31", "GCode/MinS", DEFAULT_SPINDLE_RPM_MIN, 0, 100000, checkSpindleChange);

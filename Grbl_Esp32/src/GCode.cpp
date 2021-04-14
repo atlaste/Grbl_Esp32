@@ -1515,10 +1515,18 @@ Error gc_execute_line(char* line, uint8_t client) {
         if (axis_command == AxisCommand::MotionMode) {
             GCUpdatePos gc_update_pos = GCUpdatePos::Target;
             if (gc_state.modal.motion == Motion::Linear) {
+                // Some post processors think it's a good idea to have only G1 moves. We think it's an
+                // utter waste of time. Most people just set z=0 on the top of the piece. If you do, you
+                // can set $GCode/RapidMoveAboveZ0=true and have ONLY rapid moves when Z>0.
+                if (gc_block.values.xyz[2] > 0.0f && rapid_move_above_z0->get() && !spindle->inLaserMode()) {
+                    pl_data->motion.rapidMotion = 1;  // Set rapid motion flag.
+                }
+
                 //mc_line(gc_block.values.xyz, pl_data);
                 mc_line_kins(gc_block.values.xyz, pl_data, gc_state.position);
             } else if (gc_state.modal.motion == Motion::Seek) {
                 pl_data->motion.rapidMotion = 1;  // Set rapid motion flag.
+
                 //mc_line(gc_block.values.xyz, pl_data);
                 mc_line_kins(gc_block.values.xyz, pl_data, gc_state.position);
             } else if ((gc_state.modal.motion == Motion::CwArc) || (gc_state.modal.motion == Motion::CcwArc)) {
