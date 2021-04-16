@@ -37,6 +37,8 @@ extern FlagSetting* homing_enable;
 extern FlagSetting* laser_mode;
 extern IntSetting*  laser_full_power;
 
+extern FlagSetting* rapid_move_above_z0;
+
 extern IntSetting*   status_mask;
 extern FloatSetting* junction_deviation;
 extern FloatSetting* arc_tolerance;
